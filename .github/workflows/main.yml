@@ -1,4 +1,4 @@
-name: Terraform CI/CD Anish
+name: Terraform CI/CD
 
 on:
   workflow_dispatch:
@@ -18,8 +18,8 @@ on:
         default: 'no'
         type: choice
         options:
-          - yes
-          - no
+        - 'yes'
+        - 'no'
 
 jobs:
   terraform-apply:
@@ -61,7 +61,7 @@ jobs:
 
       - name: Action Skipped
         if: github.event.inputs.confirm == 'no'
-        run: echo " You selected 'no', so Terraform Apply was skipped. Only init and plan were executed."
+        run: echo "❌ You selected 'no', so Terraform Apply was skipped. Only init and plan were executed."
 
   terraform-destroy:
     if: github.event.inputs.action == 'destroy'
@@ -94,4 +94,4 @@ jobs:
 
       - name: Destroy Skipped
         if: github.event.inputs.confirm == 'no'
-        run: echo " You selected 'no', so the destroy action was skipped. Only init was executed."
+        run: echo "❌ You selected 'no', so the destroy action was skipped. Only init was executed."
