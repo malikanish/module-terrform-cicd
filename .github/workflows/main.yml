@@ -1,0 +1,97 @@
+name: Terraform CI/CD Anish
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Select Terraform Action'
+        required: true
+        default: 'apply'
+        type: choice
+        options:
+          - apply
+          - destroy
+      
+      confirm:
+        description: 'Proceed with action? (Select "yes" to execute)'
+        required: true
+        default: 'no'
+        type: choice
+        options:
+          - yes
+          - no
+
+jobs:
+  terraform-apply:
+    if: github.event.inputs.action == 'apply'
+    name: Terraform Plan & Apply
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.3
+
+      - name: Terraform Init
+        id: init
+        run: ./scripts/init.sh
+
+      - name: Terraform Plan
+        id: plan
+        run: ./scripts/plan.sh
+
+      - name: Show Plan Output
+        run: echo "Terraform Plan generated. Review the output above."
+
+      - name: Terraform Apply
+        if: github.event.inputs.confirm == 'yes'
+        run: |
+          echo "Applying Terraform changes..."
+          ./scripts/apply.sh
+
+      - name: Action Skipped
+        if: github.event.inputs.confirm == 'no'
+        run: echo " You selected 'no', so Terraform Apply was skipped. Only init and plan were executed."
+
+  terraform-destroy:
+    if: github.event.inputs.action == 'destroy'
+    name: Terraform Destroy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.3
+
+      - name: Terraform Init
+        run: ./scripts/init.sh
+
+      - name: Terraform Destroy
+        if: github.event.inputs.confirm == 'yes'
+        run: |
+          echo "Destroying Terraform infrastructure..."
+          ./scripts/destroy.sh
+
+      - name: Destroy Skipped
+        if: github.event.inputs.confirm == 'no'
+        run: echo " You selected 'no', so the destroy action was skipped. Only init was executed."
