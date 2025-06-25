@@ -23,8 +23,7 @@ resource "aws_iam_role_policy_attachment" "ecs_instance_attach" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
 }
 
-# 3. Instance Profile
 resource "aws_iam_instance_profile" "ecs_instance_profile" {
-  name = "${var.prefix_name}-ecs-instance-profile"
+  name = "${var.prefix_name}-ecs-instance-profilesss"
   role = aws_iam_role.ecs_instance_role.name
 }
