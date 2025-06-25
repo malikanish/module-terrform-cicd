@@ -24,6 +24,6 @@ resource "aws_iam_role_policy_attachment" "ecs_instance_attach" {
 }
 
 resource "aws_iam_instance_profile" "ecs_instance_profile" {
-  name = "${var.prefix_name}-ecs-instance-profilesss"
+  name = "${var.prefix_name}-ecs-instances-profiless"
   role = aws_iam_role.ecs_instance_role.name
 }
