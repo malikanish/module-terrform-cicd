@@ -24,7 +24,7 @@ on:
 permissions:
   id-token: write   
   contents: read
-  
+
 jobs:
   terraform-apply:
     if: github.event.inputs.action == 'apply'
@@ -37,7 +37,7 @@ jobs:
       - name: Configure AWS Credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-         role-to-assume: arn:aws:iam::014498660251:role/github-terraform-role
+         role-to-assume: arn:aws:iam::014498660251:role/anish_oidc_role 
          aws-region: us-east-1
 
       - name: Setup Terraform
@@ -75,7 +75,7 @@ jobs:
       - name: Configure AWS Credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-         role-to-assume: arn:aws:iam::014498660251:role/github-terraform-role
+         role-to-assume: arn:aws:iam::014498660251:role/anish_oidc_role 
          aws-region: us-east-1
 
       - name: Setup Terraform
