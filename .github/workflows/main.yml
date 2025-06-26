@@ -37,7 +37,7 @@ jobs:
       - name: Configure AWS Credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-         role-to-assume: arn:aws:iam::014498660251:role/anish_oidc_role 
+         role-to-assume: arn:aws:iam::014498660251:role/anish_oidc_roles 
          aws-region: us-east-1
 
       - name: Setup Terraform
@@ -75,7 +75,7 @@ jobs:
       - name: Configure AWS Credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-         role-to-assume: arn:aws:iam::014498660251:role/anish_oidc_role 
+         role-to-assume: arn:aws:iam::014498660251:role/anish_oidc_roles 
          aws-region: us-east-1
 
       - name: Setup Terraform
